@@ -1,0 +1,9 @@
+{
+    'python': False,
+    "json": None,
+    "set": {1, 2, 3, "set"},
+    "tuple": ("tuple", 1, 2, 3),
+    False: "Test key",
+    True: frozenset({"set"}),
+    "numbers": [1, 1.0, 0x1, 0o1, 0b1] # int, float, hex, octal, binary
+}
