@@ -3,14 +3,14 @@ from collections.abc import Iterable
 
 
 class PONLexer(Lexer):
-    tokens = {"FLOAT", "INTEGER", "STRING", "ID"}
+    tokens = {"FLOAT", "INT", "STR", "ID"}
 
     literals = {'{', '}', '[', ']', ',', ':', '(', ')'}
     ignore_comment = r'\#.*'
     ignore = " \t\n"
 
     @_(r"['\"](.*?)['\"]")
-    def STRING(self, t):
+    def STR(self, t):
         t.value = t.value.strip("\"'")
         return t
 
@@ -20,7 +20,7 @@ class PONLexer(Lexer):
         return t
 
     @_(r"0b[0-1]+", r"0o[0-7]+", r"0x[0-9a-fA-F]+", r"\d+")
-    def INTEGER(self, t):
+    def INT(self, t):
         if t.value.startswith('0x'):
             t.value = int(t.value[2:], 16)
         elif t.value.startswith("0o"):
@@ -61,7 +61,7 @@ class PONParser(Parser):
                     raise TypeError(f"Wrong argument type in function {p.ID}. The correct argument type is {Iterable}")
                 return frozenset(p.elements[0])
 
-    @_('STRING', 'INTEGER', 'FLOAT')
+    @_('STR', 'INT', 'FLOAT')
     def type(self, p):
         return p[0]
 
