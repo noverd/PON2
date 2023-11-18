@@ -12,7 +12,7 @@ DESCRIPTION = 'PON/2 - Python Object Notation, JSON with python types and Custom
 URL = 'https://github.com/noverd/PON2/'
 REQUIRES_PYTHON = '>=3.12.0'
 REQUIRED = ["sly"]
-README = 'README.rst'
+README = 'README.md'
 
 
 here = os.path.abspath(os.path.dirname(__file__))

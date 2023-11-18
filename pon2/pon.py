@@ -11,11 +11,10 @@ type PONDict = dict | list | tuple | set
 
 type PONTypes = str | int | float
 
-__all__ = ["NamespaceDict", "loader"]
+__all__ = ["NamespaceDict", "loader", "PONLoader"]
 
 
 class NamespaceDict(dict):
-    import contextlib
     def __init__(self, objects: Iterable[object]) -> None:
         super().__init__({obj.__name__ if hasattr(obj, "__name__") else str(obj): obj for obj in objects})
 
