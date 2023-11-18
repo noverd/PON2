@@ -5,6 +5,7 @@ from sly.lex import Token
 from sly.yacc import YaccProduction
 from collections.abc import Iterable
 from typing import Optional
+import contextlib
 
 type PONDict = dict | list | tuple | set
 
@@ -12,11 +13,16 @@ type PONTypes = str | int | float
 
 __all__ = ["NamespaceDict", "loader"]
 
+
 class NamespaceDict(dict):
+    import contextlib
     def __init__(self, objects: Iterable[object]) -> None:
         super().__init__({obj.__name__ if hasattr(obj, "__name__") else str(obj): obj for obj in objects})
 
-STANDART_NAMESPACE: NamespaceDict = NamespaceDict({False, True, None, str, int, bool, float, dict, list, tuple, set, frozenset})
+
+STANDART_NAMESPACE: NamespaceDict = NamespaceDict(
+    {False, True, None, str, int, bool, float, dict, list, tuple, set, frozenset})
+
 
 class PONLexer(Lexer):
     tokens: set[str] = {"FLOAT", "INT", "STR", "ID"}
@@ -26,7 +32,7 @@ class PONLexer(Lexer):
     ignore: str = " \t\n"
     namespace: NamespaceDict
 
-    def __init__(self, namespace: NamespaceDict) -> None: 
+    def __init__(self, namespace: NamespaceDict) -> None:
         self.namespace = namespace
 
     @_(r"['\"](.*?)['\"]")
@@ -52,13 +58,10 @@ class PONLexer(Lexer):
         return t
 
     @_(r"[a-zA-Z_][a-zA-Z0-9_]*")
-    def ID(self, t: Token) -> Token
-        try:
+    def ID(self, t: Token) -> Token:
+        with contextlib.suppress(KeyError):
             t.value = self.namespace[t.value]
-        except KeyError:
-            pass
         return t
-        
 
 
 class PONParser(Parser):
@@ -66,7 +69,7 @@ class PONParser(Parser):
     start: str = "pon"
     namespace: NamespaceDict
 
-    def __init__(self, namespace: NamespaceDict) -> None: 
+    def __init__(self, namespace: NamespaceDict) -> None:
         self.namespace = namespace
 
     @_('dict', 'list', 'tuple', 'set')
@@ -183,7 +186,7 @@ class PONLoader:
         if namespace is not None:
             namespace = STANDART_NAMESPACE + namespace
         else:
-            namespace = STANDART_NAMESPACE 
+            namespace = STANDART_NAMESPACE
         self.lexer = PONLexer(namespace)
         self.parser = PONParser(namespace)
 

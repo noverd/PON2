@@ -4,13 +4,11 @@
 import setuptools
 import os
 
-from src.schemadict.__version__ import __version__
-
 NAME = 'pon2'
-VERSION = __version__
+VERSION = "1.0"
 AUTHOR = 'Noverdo-Gagarinten'
 EMAIL = 'thefinalspacestudio@gmail.com'
-DESCRIPTION = 'Validate Python dictionaries like JSON schema'
+DESCRIPTION = 'PON/2 - Python Object Notation, JSON with python types and Custom Classes'
 URL = 'https://github.com/noverd/PON2/'
 REQUIRES_PYTHON = '>=3.12.0'
 REQUIRED = ["sly"]
@@ -39,4 +37,6 @@ setuptools.setup(
         "Operating System :: OS Independent",
         "Environment :: Console",
         "Intended Audience :: Developers",
-        "Topic :: Scientific/Engineering",
+        "Topic :: Scientific/Engineering"
+    ]
+)
