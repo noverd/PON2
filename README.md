@@ -34,7 +34,7 @@ frozenset([0])
 ]
 }
 ```
-## Документация
+## Documentation
 
 PON is similar to the JSON module, but is based on the PONLoader class.
 ```python
